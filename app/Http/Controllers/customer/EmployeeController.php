@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\employee;
+use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class EmployeeController extends Controller
 {
@@ -16,7 +17,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
      
-     
+        
         //return view('dashboard.profile',compact('employee'))
     }
 
@@ -54,9 +55,9 @@ class EmployeeController extends Controller
     public function dashboard(Request $req)
     {
 
-        $count  =DB::table('customers')->count();
-        $employee = Employee::where('username',$req->session()->get('username'))->first();
-        return view('dashboard.index',compact('count'))->with('employee',$employee);
+      /*   $count  =DB::table('customers')->count(); */
+       /*  $employee = User::where('username',$req->session()->get('username'))->first(); */
+        return view('employee.dashboard.index');/* ->with('employee',$employee); */
     }
     /**
      * Show the form for editing the specified resource.
@@ -66,7 +67,8 @@ class EmployeeController extends Controller
      */
     public function edit( $id ,Request $req)
     {
-      
+       $employee = User::find($id);
+       return view('employee.dashboard.profile.editprofile')->with('employee', $employee);
     }
     
     /**
@@ -77,7 +79,34 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update($id, Request $req)
-    {            
+    {
+
+        $employee = User::find($id);   
+            $employee->fullname     = $req->fullname;
+            $employee->email        = $req->email;
+            $employee->phone        = $req->phone;
+            $employee->address      = $req->address;
+            $employee->facebook     = $req->facebook;
+           if ($req->hasFile('myfile')) {
+                $file = $req->file('myfile');
+                $fileName =  $req->session()->get('username') . '.' .  $file->getClientOriginalExtension();
+                if ($file->move('uploads', $fileName)) {
+                    $employee->profile_img  = $fileName;
+                    $employee->save();
+                   
+                } else {
+                 
+                    return redirect('/dashboard/profile');
+                }
+
+               
+            }    
+            $employee->save();
+    return redirect('/dashboard/profile');
+    
+   
+      
+            
 
 }
 
@@ -92,7 +121,7 @@ class EmployeeController extends Controller
         //
     }
     public function profile(Request $req){
-        $employee = Employee::where('username',$req->session()->get('username'))->first();
-        return view('dashboard.profile.profile')->with('employee',$employee);
+        $employee = User::where('username',$req->session()->get('username'))->first();
+        return view('employee.dashboard.profile.profile')->with('employee',$employee);
     }
 }

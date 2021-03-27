@@ -40,5 +40,10 @@ Route::get('/logout',[LogoutController::class, 'logout'])->name('auth.logout');/
 //Varrification Start
 Route::group(['middleware'=>'sess'],function ( ){
 
+    //Customer ->profile
+    Route::get("dashboard/profile",[EmployeeController::class,'profile']);
+    Route::get("dashboard/editprofile/{id}",[EmployeeController::class,'edit']);
+    Route::post("dashboard/editprofile/{id}",[EmployeeController::class,'update']);
+
 });
 //Varrification END
