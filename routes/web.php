@@ -44,6 +44,11 @@ Route::group(['middleware'=>'sess'],function ( ){
     Route::get("dashboard/profile",[EmployeeController::class,'profile']);
     Route::get("dashboard/editprofile/{id}",[EmployeeController::class,'edit']);
     Route::post("dashboard/editprofile/{id}",[EmployeeController::class,'update']);
+    
 
+    //Admin ->profile
+    Route::get("dashboard/profile",[AdminProfileController::class,'profile']);
+    Route::get("dashboard/editprofile/{id}",[AdminProfileController::class,'edit']);
+    Route::post("dashboard/editprofile/{id}",[AdminProfileController::class,'update']);
 });
 //Varrification END
