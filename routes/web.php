@@ -50,5 +50,15 @@ Route::group(['middleware'=>'sess'],function ( ){
     Route::get("dashboard/profile",[AdminProfileController::class,'profile']);
     Route::get("dashboard/editprofile/{id}",[AdminProfileController::class,'edit']);
     Route::post("dashboard/editprofile/{id}",[AdminProfileController::class,'update']);
+
+    //Admin -> producct
+    Route::get("dashboard/createpackage",[ProductController::class,'create']);
+    Route::post("dashboard/createpackage",[ProductController::class,'store']);
+    Route::get("dashboard/viewpackage",[ProductController::class,'show']);
+    Route::get("dashboard/viewpackage/details/{p_id}",[ProductController::class,'packageshow']);
+    Route::get("dashboard/viewpackage/download-pdf",[ProductController::class,'downloadPDF']);
+    Route::get("dashboard/editpackage/{p_id}",[ProductController::class,'edit']);
+    Route::post("dashboard/editpackage/{p_id}",[ProductController::class,'update']);
+    Route::post("dashboard/deletepackage/{p_id}",[ProductController::class,'destroy']);
 });
 //Varrification END
